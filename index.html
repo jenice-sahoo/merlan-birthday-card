@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>happy birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Abril+Fatface&family=Bungee&family=Caveat:wght@600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tan:#d8b075;
+  --tan-deep:#c39a5c;
+  --kraft:#cdab80;
+  --kraft-lt:#dcc09a;
+  --red:#b81528;
+  --red-deep:#8d0f1e;
+  --red-ink:#a3122a;
+  --cream:#f7efdf;
+  --paper:#fdfaf2;
+  --ink:#2c2118;
+  --shade:rgba(70,40,14,.38);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){ --tan:#8a6a3d; --tan-deep:#6d5330; --shade:rgba(0,0,0,.55); }
+}
+:root[data-theme="dark"]{ --tan:#8a6a3d; --tan-deep:#6d5330; --shade:rgba(0,0,0,.55); }
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  margin:0;
+  background-color:var(--tan);
+  background-image:
+    radial-gradient(120% 90% at 25% 0%, rgba(255,240,205,.30), transparent 62%),
+    radial-gradient(90% 70% at 85% 100%, rgba(90,58,20,.28), transparent 65%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.22'/></svg>");
+  color:var(--ink);
+  font-family:"Courier Prime",ui-monospace,monospace;
+  overflow-x:hidden;
+}
+.stage{min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:clamp(24px,6vh,70px) 8px 16px}
+
+/* scattered stars on the desk */
+.deskStar{position:fixed;width:26px;opacity:.9;pointer-events:none;z-index:0}
+
+.scaler{
+  position:relative;width:760px;height:540px;
+  transform-origin:top center;
+  transition:transform .75s cubic-bezier(.2,.8,.25,1);
+  perspective:1700px;perspective-origin:50% 45%;
+  z-index:2;
+}
+.book{position:absolute;inset:0;transform-style:preserve-3d;transform:translateX(-190px);transition:transform .95s cubic-bezier(.65,.02,.2,1)}
+.open .book{transform:translateX(0)}
+
+.page{position:absolute;top:0;width:380px;height:540px;overflow:hidden;box-shadow:0 22px 40px -20px var(--shade)}
+.kraft{
+  background-color:var(--kraft);
+  background-image:
+    radial-gradient(120% 80% at 70% 15%, rgba(255,243,220,.55), transparent 62%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='k'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4'/></filter><rect width='180' height='180' filter='url(%23k)' opacity='0.26'/></svg>");
+}
+#candlesPage{left:380px;border-radius:2px 7px 7px 2px}
+#candlesPage::before{content:"";position:absolute;left:0;top:0;bottom:0;width:24px;background:linear-gradient(90deg,rgba(80,50,20,.28),transparent);z-index:8;pointer-events:none}
+
+.leaf{position:absolute;top:0;left:380px;width:380px;height:540px;transform-origin:left center;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.65,.02,.2,1)}
+.open .leaf{transform:rotateY(-180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;isolation:isolate;-webkit-transform:translateZ(0)}
+.cover{transform:translateZ(1px)}
+.letterPage{transform:rotateY(180deg) translateZ(1px)}
+
+/* ---------- gingham ---------- */
+.gingham{
+  background-color:#f6ecdc;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(184,21,40,.42) 0 16px, transparent 16px 32px),
+    repeating-linear-gradient(90deg, rgba(184,21,40,.42) 0 16px, transparent 16px 32px);
+}
+.gingham.fine{
+  background-image:
+    repeating-linear-gradient(0deg, rgba(184,21,40,.45) 0 9px, transparent 9px 18px),
+    repeating-linear-gradient(90deg, rgba(184,21,40,.45) 0 9px, transparent 9px 18px);
+}
+
+/* ---------- ransom lettering ---------- */
+.rn{line-height:1.5}
+.rw{display:inline-block;margin:0 5px;white-space:nowrap}
+.rn i{
+  display:inline-block;font-style:normal;padding:2px 6px 4px;margin:0 1px;
+  border-radius:2px;box-shadow:1.5px 2px 0 rgba(40,20,10,.22);
+}
+
+/* ---------- cover ---------- */
+.cover{
+  cursor:pointer;border-radius:2px 7px 7px 2px;
+  box-shadow:0 26px 46px -22px var(--shade), inset -12px 0 24px -16px rgba(70,44,18,.45);
+  display:block;
+}
+.cover:focus-visible{outline:3px dashed var(--red-deep);outline-offset:-10px}
+.cover .grid{position:absolute;inset:0;pointer-events:none}
+.cover .grid i{position:absolute;background:rgba(184,21,40,.75)}
+.cover .grid i.h{left:0;right:0;height:2px}
+.cover .grid i.v{top:0;bottom:0;width:2px}
+
+.coverName{position:absolute;left:14px;right:14px;top:26px;text-align:center;font-size:46px}
+
+.burst{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);width:112%;pointer-events:none}
+.photoFrame{
+  position:absolute;left:50%;top:58%;transform:translate(-50%,-50%) rotate(-1.2deg);
+  width:74%;aspect-ratio:3/3.6;background:var(--paper);padding:7px;
+  box-shadow:0 14px 24px -12px rgba(50,28,10,.8);
+}
+.photoFrame .img{
+  width:100%;height:100%;background-size:cover;background-position:center;
+  background-color:#e6d6bb;display:flex;align-items:center;justify-content:center;
+  text-align:center;font-size:15px;color:#8a7458;padding:14px;
+}
+.hat{position:absolute;right:6%;top:10%;width:26%;transform:rotate(9deg);pointer-events:none}
+.bang{position:absolute;left:4%;top:30%;width:20%;transform:rotate(-7deg);pointer-events:none}
+.lips{position:absolute;right:2%;top:24%;width:17%;transform:rotate(11deg);pointer-events:none}
+.scrap{
+  position:absolute;background:var(--paper);
+  background-image:repeating-linear-gradient(transparent 0 6px, rgba(60,70,90,.35) 6px 7px);
+  box-shadow:0 3px 6px rgba(50,28,10,.3);
+}
+.cover .hint{
+  position:absolute;left:50%;bottom:16px;transform:translateX(-50%) rotate(-1.5deg);
+  background:var(--cream);color:var(--red);font-size:15px;letter-spacing:.06em;
+  padding:5px 12px;box-shadow:0 2px 5px rgba(50,28,10,.3);
+  animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{50%{opacity:.5}}
+
+/* ---------- letter page ---------- */
+.letterPage{border-radius:7px 2px 2px 7px}
+.letterPage::after{content:"";position:absolute;right:0;top:0;bottom:0;width:24px;background:linear-gradient(270deg,rgba(80,50,20,.28),transparent);z-index:9;pointer-events:none}
+.patch{position:absolute}
+.patch.tr{right:-16px;top:-14px;width:150px;height:130px;transform:rotate(3deg);clip-path:polygon(6% 4%,96% 0,100% 100%,20% 96%,0 46%)}
+.patch.bl{left:-18px;bottom:-16px;width:140px;height:150px;transform:rotate(-4deg);clip-path:polygon(4% 6%,92% 0,100% 88%,42% 100%,0 60%)}
+.tornWhite{position:absolute;left:-6%;top:-4%;width:95%;height:38%;pointer-events:none}
+
+.star{position:absolute;pointer-events:none}
+.envArea{position:absolute;inset:0;overflow:hidden}
+.letter{
+  position:absolute;left:6%;top:9%;width:85%;height:79%;
+  background:var(--paper);
+  padding:26px 24px 22px;
+  box-shadow:0 12px 22px -14px rgba(50,28,10,.9);
+  transform:translate(-4%,3%) rotate(-1.4deg) scale(.94);
+  transition:transform .55s cubic-bezier(.2,.85,.25,1),box-shadow .5s;
+  cursor:pointer;z-index:3;overflow:hidden;
+  font-family:"Courier Prime",monospace;font-size:15px;line-height:1.6;color:#2b2b33;
+  text-align:left;
+}
+.letter.out{transform:translate(0,0) rotate(0deg) scale(1);box-shadow:0 30px 44px -18px rgba(50,28,10,.95);z-index:8}
+.letter:focus-visible{outline:3px dashed var(--red);outline-offset:-6px}
+.letter p{margin:0 0 12px;hyphens:auto}
+.letter .sign{font-family:"Caveat",cursive;font-size:26px;color:var(--red);margin-top:6px;line-height:1.1}
+.letter .scrollwrap{height:100%;overflow-y:auto;overflow-x:hidden;padding-right:8px;scrollbar-width:thin}
+
+.envelope{position:absolute;left:23%;top:15%;width:75%;height:68%;z-index:5;cursor:pointer;transition:transform .5s;filter:drop-shadow(0 12px 18px rgba(50,28,10,.5))}
+.letter.out ~ .envelope{transform:translateY(6%) scale(.97)}
+.envelope svg{width:100%;height:100%;display:block}
+.pin{position:absolute;right:16%;top:9%;width:15%;z-index:6;pointer-events:none;filter:drop-shadow(0 4px 5px rgba(50,28,10,.55))}
+
+.tapeLabel{
+  position:absolute;background:var(--cream);color:var(--red);
+  font-size:14px;letter-spacing:.08em;line-height:1.3;text-transform:uppercase;
+  padding:7px 13px;box-shadow:0 3px 7px rgba(50,28,10,.35);
+  clip-path:polygon(2% 6%,98% 0,100% 94%,1% 100%);
+}
+.letterTag{left:50%;bottom:16px;transform:translateX(-50%) rotate(-1.4deg);z-index:9;text-align:center;pointer-events:none}
+.hearts{position:absolute;left:6%;bottom:12%;width:22%;z-index:6;pointer-events:none}
+
+/* ---------- candles page ---------- */
+.redBand{position:absolute;left:0;right:0;top:0;height:16%;background:var(--red-deep)}
+.bandTear{position:absolute;left:0;right:0;top:11%;height:9%;z-index:2;pointer-events:none}
+.blowTitle{position:absolute;left:16px;right:16px;top:9%;text-align:center;font-size:38px;z-index:3}
+
+.cakeStage{position:absolute;left:0;right:0;bottom:0;height:56%;display:flex;align-items:flex-end;justify-content:center}
+.cakeBox{position:relative;height:100%;aspect-ratio:300/230;max-width:100%}
+.cakeBox>svg{width:100%;height:100%;display:block}
+.cakeBox .artimg{position:absolute;inset:0;background-size:contain;background-repeat:no-repeat;background-position:bottom center}
+
+.flame{
+  position:absolute;width:12.5%;
+  transform-origin:50% 100%;
+  transform:translate(-50%,-100%) rotate(var(--bend,0deg)) scale(var(--sx,1),var(--sy,1));
+  transition:opacity .35s ease;pointer-events:none;
+  filter:drop-shadow(0 3px 5px rgba(60,30,10,.45));
+}
+.flame svg{width:100%;height:auto;display:block}
+.flame .artimg{width:100%;padding-top:125%;background-size:contain;background-repeat:no-repeat;background-position:bottom center}
+.flame.out{opacity:0}
+.smoke{position:absolute;width:6%;height:6%;border-radius:50%;background:radial-gradient(circle,rgba(235,228,214,.8),rgba(235,228,214,0) 70%);transform:translate(-50%,-100%);opacity:0;pointer-events:none}
+.smoke.go{animation:wisp 2.1s ease-out forwards}
+@keyframes wisp{0%{opacity:.85;transform:translate(-50%,-100%) scale(.5)}100%{opacity:0;transform:translate(-50%,-360%) scale(2.8) rotate(16deg)}}
+
+.blowTag{
+  left:50%;bottom:8%;transform:translateX(-50%) rotate(-1deg);z-index:9;
+  border:0;cursor:pointer;overflow:hidden;font-family:"Courier Prime",monospace;
+  min-width:52%;text-align:center;touch-action:none;
+}
+.blowTag .lvl{position:absolute;left:0;top:0;bottom:0;width:0%;background:rgba(184,21,40,.22);transition:width .06s linear}
+.blowTag .txt{position:relative;z-index:1}
+.blowTag:focus-visible{outline:3px dashed var(--red-deep);outline-offset:3px}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+
+.btn{
+  font-family:"Courier Prime",monospace;font-size:14px;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--cream);color:var(--red);border:0;padding:7px 13px;cursor:pointer;
+  box-shadow:0 3px 7px rgba(50,28,10,.35);
+  clip-path:polygon(2% 6%,98% 0,100% 94%,1% 100%);
+}
+.btn:active{transform:translateY(1px)}
+.btn.on{background:var(--red);color:var(--cream)}
+.btn:focus-visible{outline:3px dashed var(--red-deep);outline-offset:3px}
+
+.wish{
+  position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  background:rgba(253,250,242,.86);
+  opacity:0;pointer-events:none;transition:opacity .6s;text-align:center;padding:26px;
+}
+.wish.show{opacity:1;pointer-events:auto}
+.wish h2{font-family:"Caveat",cursive;font-weight:700;font-size:44px;line-height:1.05;margin:0;color:var(--red-ink)}
+.wish .hb{font-family:"Caveat",cursive;font-size:28px;color:#241d16;margin:0}
+
+/* ---------- desk chrome ---------- */
+.underbar{display:flex;flex-direction:column;align-items:center;gap:9px;margin-top:16px;z-index:3;position:relative}
+.forTag{
+  background:var(--paper);font-family:"Caveat",cursive;font-size:22px;color:#241d16;
+  padding:5px 18px;transform:rotate(-1deg);box-shadow:0 3px 8px rgba(50,28,10,.35);
+}
+.deskNote{max-width:36ch;font-size:12px;line-height:1.45;color:#5b4326;text-align:center;letter-spacing:.02em}
+#backBtn{opacity:0;pointer-events:none;transition:opacity .4s}
+.open #backBtn{opacity:1;pointer-events:auto}
+#photoBtn{margin-top:2px}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.12s !important}}
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="scaler" id="scaler">
+    <div class="book" id="book">
+
+      <!-- ============ RIGHT PAGE: cake ============ -->
+      <section class="page kraft" id="candlesPage" aria-label="Blow the candles">
+        <div class="redBand"></div>
+        <svg class="bandTear" viewBox="0 0 380 50" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 0 h380 v22 q-18 8 -36 2 q-20 -7 -40 3 q-18 9 -38 1 q-22 -9 -42 2 q-20 10 -40 0 q-18 -9 -38 1 q-20 9 -40 0 q-18 -8 -36 3 q-18 6 -30 -2z" fill="#fdfaf2"/>
+        </svg>
+        <div class="blowTitle rn" id="blowTitle"></div>
+
+        <div class="cakeStage">
+          <div class="cakeBox" id="cakeBox">
+            <div class="artimg" id="cakeArt" hidden></div>
+            <svg viewBox="0 0 300 230" id="cakeSvg" aria-label="A hand-drawn cake with three candles">
+              <g fill="none" stroke="#b81528" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <!-- candles -->
+                <rect x="72"  y="46" width="34" height="74" rx="4" fill="#fdfaf2"/>
+                <rect x="133" y="40" width="34" height="80" rx="4" fill="#fdfaf2"/>
+                <rect x="194" y="46" width="34" height="74" rx="4" fill="#fdfaf2"/>
+                <path d="M89 60 v46 M150 54 v52 M211 60 v46" stroke-width="3" opacity=".55"/>
+                <!-- cake body -->
+                <path d="M18 128 q132 -22 264 0 q8 52 0 96 q-132 18 -264 0 q-8 -46 0 -96z" fill="#fdfaf2"/>
+                <!-- piped frosting scallops -->
+                <path d="M18 128 q14 -20 30 0 q14 -20 29 0 q14 -20 29 0 q14 -20 29 0 q14 -20 29 0 q14 -20 29 0 q14 -20 29 0 q14 -20 29 0 q14 -20 30 0"/>
+                <path d="M22 166 q14 -16 29 0 q14 -16 29 0 q14 -16 29 0 q14 -16 29 0 q14 -16 29 0 q14 -16 29 0 q14 -16 29 0 q14 -16 29 0" stroke-width="4" opacity=".85"/>
+                <!-- little bows -->
+                <path d="M50 206 q-14 -12 -22 -2 q-6 8 6 10 q12 2 16 -8z" stroke-width="4"/>
+                <path d="M250 206 q14 -12 22 -2 q6 8 -6 10 q-12 2 -16 -8z" stroke-width="4"/>
+                <path d="M146 210 q8 -10 16 0" stroke-width="4"/>
+                <path d="M160 216 h-4 M144 216 h-4" stroke-width="4"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <button class="tapeLabel blowTag" id="blowTag">
+          <span class="lvl" id="meterFill"></span>
+          <span class="txt" id="micNote">blow the candles</span>
+        </button>
+
+        <div class="wish" id="wish">
+          <h2 id="wishText">make a wish</h2>
+          <p class="hb">happy birthday &#9829;</p>
+          <button class="btn" id="relightBtn">relight</button>
+        </div>
+      </section>
+
+      <!-- ============ LEAF: cover front / letter back ============ -->
+      <div class="leaf" id="leaf">
+
+        <div class="face cover gingham" id="cover" role="button" tabindex="0" aria-label="Open the card">
+          <div class="grid">
+            <i class="h" style="top:26%"></i><i class="h" style="top:62%"></i>
+            <i class="v" style="left:36%"></i><i class="v" style="left:74%"></i>
+          </div>
+
+          <svg class="burst" viewBox="0 0 300 300" aria-hidden="true">
+            <path d="M150 6 l26 76 l72 -40 l-38 74 l82 26 l-82 26 l38 74 l-72 -40 l-26 76 l-26 -76 l-72 40 l38 -74 l-82 -26 l82 -26 l-38 -74 l72 40z" fill="#fdfaf2" opacity=".92"/>
+          </svg>
+
+          <div class="coverName rn" id="coverName"></div>
+
+          <svg class="bang" viewBox="0 0 60 110" aria-hidden="true">
+            <rect x="2" y="2" width="24" height="106" fill="#fdfaf2" transform="rotate(-4 14 55)"/>
+            <rect x="32" y="2" width="24" height="106" fill="#fdfaf2" transform="rotate(5 44 55)"/>
+            <path d="M10 14 l8 0 l-2 60 l-4 0z M40 14 l8 0 l-2 60 l-4 0z" fill="#1a1a1a"/>
+            <circle cx="14" cy="88" r="4" fill="#1a1a1a"/><circle cx="44" cy="88" r="4" fill="#1a1a1a"/>
+          </svg>
+
+          <svg class="hat" viewBox="0 0 90 120" aria-hidden="true">
+            <path d="M45 4 L86 112 L4 112 Z" fill="#fdfaf2"/>
+            <path d="M45 4 L86 112 L4 112 Z" fill="none" stroke="#e86a8c" stroke-width="3"/>
+            <path d="M18 92 q14 -10 28 0 q14 10 28 0" stroke="#e86a8c" stroke-width="7" fill="none"/>
+            <path d="M24 66 q12 -9 24 0 q12 9 24 0" stroke="#e86a8c" stroke-width="6" fill="none"/>
+            <path d="M31 40 q10 -8 20 0" stroke="#e86a8c" stroke-width="5" fill="none"/>
+          </svg>
+
+          <svg class="lips" viewBox="0 0 80 60" aria-hidden="true">
+            <path d="M40 16 q10 -14 26 -6 q14 8 8 20 q-8 18 -34 24 q-26 -6 -34 -24 q-6 -12 8 -20 q16 -8 26 6z" fill="#c2647f" opacity=".85"/>
+            <path d="M6 26 q34 10 68 0" stroke="#fdfaf2" stroke-width="2" fill="none" opacity=".6"/>
+          </svg>
+
+          <span class="scrap" style="left:3%;top:52%;width:15%;height:12%;transform:rotate(-16deg)"></span>
+          <span class="scrap" style="right:4%;top:44%;width:16%;height:10%;transform:rotate(9deg)"></span>
+
+          <div class="photoFrame">
+            <div class="img" id="coverPhoto">your friend&#8217;s photo goes here</div>
+          </div>
+
+          <p class="hint">tap to open</p>
+        </div>
+
+        <div class="face letterPage kraft" id="letterPage">
+          <svg class="tornWhite" viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 0 h300 q-10 46 -40 74 q-34 32 -86 46 q-50 14 -104 22 q-40 6 -70 4z" fill="#fdfaf2" opacity=".92"/>
+          </svg>
+          <span class="patch tr gingham fine"></span>
+          <span class="patch bl gingham fine"></span>
+
+          <svg class="star" style="left:11%;top:7%;width:34px" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2 l5 13 l14 1 l-11 9 l4 13 l-12 -8 l-12 8 l4 -13 l-11 -9 l14 -1z" fill="#8d0f1e"/></svg>
+          <svg class="star" style="left:24%;top:14%;width:26px" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2 l5 13 l14 1 l-11 9 l4 13 l-12 -8 l-12 8 l4 -13 l-11 -9 l14 -1z" fill="#8d0f1e"/></svg>
+          <svg class="star" style="left:34%;bottom:6%;width:22px" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2 l5 13 l14 1 l-11 9 l4 13 l-12 -8 l-12 8 l4 -13 l-11 -9 l14 -1z" fill="#8d0f1e"/></svg>
+
+          <div class="envArea">
+            <article class="letter" id="letter" role="button" tabindex="0" aria-label="Open the letter">
+              <div class="scrollwrap">
+                <div id="letterBody"></div>
+                <div class="sign" id="letterSign"></div>
+              </div>
+            </article>
+
+            <div class="envelope" id="envelope" aria-hidden="true">
+              <svg viewBox="0 0 300 240">
+                <rect x="4" y="4" width="292" height="232" fill="#8d0f1e"/>
+                <path d="M4 4 L150 128 L296 4 Z" fill="#a3122a"/>
+                <path d="M4 236 L150 116 L296 236 Z" fill="#9b1024"/>
+                <path d="M4 4 L150 128 L296 4" fill="none" stroke="#6f0a16" stroke-width="3"/>
+                <path d="M4 236 L150 116 L296 236" fill="none" stroke="#6f0a16" stroke-width="3"/>
+              </svg>
+            </div>
+
+            <svg class="pin" viewBox="0 0 60 90" aria-hidden="true">
+              <path d="M30 52 l3 34 l-6 0z" fill="#d7d7d7"/>
+              <ellipse cx="30" cy="30" rx="22" ry="22" fill="#c1152a"/>
+              <ellipse cx="23" cy="22" rx="8" ry="6" fill="#ff8f9c" opacity=".8"/>
+              <rect x="22" y="46" width="16" height="10" rx="3" fill="#a3122a"/>
+            </svg>
+
+            <svg class="hearts" viewBox="0 0 90 70" aria-hidden="true">
+              <g fill="none" stroke="#2f4f6e" stroke-width="3">
+                <path d="M20 26 q-10 -14 -16 -2 q-6 12 16 24 q22 -12 16 -24 q-6 -12 -16 2z"/>
+                <path d="M54 12 q-8 -11 -13 -2 q-5 10 13 19 q18 -9 13 -19 q-5 -9 -13 2z"/>
+                <path d="M62 46 q-8 -11 -13 -2 q-5 10 13 19 q18 -9 13 -19 q-5 -9 -13 2z"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="tapeLabel letterTag">click letter to<br>open and close</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="underbar">
+    <div class="forTag" id="forTag">for you &#9829;</div>
+    <div class="row">
+      <button class="btn" id="backBtn">back to cover</button>
+      <button class="btn" id="photoBtn">add cover photo</button>
+    </div>
+    <p class="deskNote" id="deskNote">mics only work on a hosted https page, not a file opened from your computer. if the mic is blocked, hold the &#8220;blow the candles&#8221; label instead.</p>
+  </div>
+</div>
+
+<input type="file" id="photoInput" accept="image/*" hidden>
+<canvas id="confetti"></canvas>
+
+<script>
+/* =========================================================
+   EDIT HERE
+   art.cover  -> your friend's photo as a base64 data URI
+   art.cake / art.flame -> optional painted cake + flame PNGs
+   ========================================================= */
+const CONFIG = {
+  name: "merlan",
+  letterBody: [
+    "i'm sorry this isn't on real paper,",
+    "but i wanted to make you something.",
+    "i am thankful for you. you are one of the best parts of my life and i hope this year nobody dims you. keep going after the things you love, and be gentle with yourself while you do it.",
+    "i wish you a year of good experiences, the kind you'll want to tell me about, and a lot of quiet luck.",
+    "i'm so proud of you. this year was not an easy one, but you did it with your whole chest. you are loved from close by and from very far away.",
+    "happy birthday."
+  ],
+  letterSign: "love, me",
+  art: { cover:"", cake:"", flame:"" }
+};
+
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+/* ---------- ransom-note lettering ---------- */
+const RN_FONTS = ['"Anton",sans-serif','"Abril Fatface",serif','"Bungee",sans-serif','"Courier Prime",monospace','"Anton",sans-serif','"Abril Fatface",serif'];
+const RN_COLORS = [
+  {bg:'#fdfaf2', fg:'#b81528'}, {bg:'#b81528', fg:'#fdfaf2'},
+  {bg:'#fdfaf2', fg:'#2f6fb0'}, {bg:'#f0c419', fg:'#1a1a1a'},
+  {bg:'#1a1a1a', fg:'#fdfaf2'}, {bg:'#e86a8c', fg:'#fdfaf2'},
+  {bg:'#fdfaf2', fg:'#4f9a54'}, {bg:'#8e57a5', fg:'#fdfaf2'},
+  {bg:'#fdfaf2', fg:'#e86a8c'}, {bg:'#2f6fb0', fg:'#fdfaf2'}
+];
+function seeded(str){ let h=2166136261; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619); } return ()=> (h = Math.imul(h^(h>>>15), 2246822507)) >>> 0; }
+function ransom(text, seedKey){
+  const rnd = seeded(seedKey || text);
+  return text.split(' ').map(word => '<span class="rw">' + word.split('').map(ch => {
+    const f = RN_FONTS[rnd()%RN_FONTS.length];
+    const c = RN_COLORS[rnd()%RN_COLORS.length];
+    const rot = ((rnd()%1600)/100 - 8).toFixed(1);
+    const dy  = ((rnd()%900)/100 - 4.5).toFixed(1);
+    const sc  = (0.88 + (rnd()%34)/100).toFixed(2);
+    return '<i style="font-family:'+f+';background:'+c.bg+';color:'+c.fg+
+           ';transform:rotate('+rot+'deg) translateY('+dy+'px) scale('+sc+')">'+ch+'</i>';
+  }).join('') + '</span>').join(' ');
+}
+
+$('#coverName').innerHTML = ransom(CONFIG.name, CONFIG.name + '-cover');
+$('#blowTitle').innerHTML = ransom('blow the candles', 'blow-title');
+$('#wishText').textContent = 'make a wish, ' + CONFIG.name + ' \u2728';
+$('#forTag').innerHTML = 'for ' + CONFIG.name + ' &#9829;';
+document.title = 'happy birthday, ' + CONFIG.name;
+$('#letterBody').innerHTML = CONFIG.letterBody.map(() => '<p></p>').join('');
+$$('#letterBody p').forEach((p,i) => p.textContent = CONFIG.letterBody[i]);
+$('#letterSign').textContent = CONFIG.letterSign;
+
+/* ---------- cover photo ---------- */
+function setPhoto(url){
+  const el = $('#coverPhoto');
+  el.textContent = '';
+  el.style.backgroundImage = 'url("' + url + '")';
+}
+if(CONFIG.art.cover) setPhoto(CONFIG.art.cover);
+$('#photoBtn').addEventListener('click', () => $('#photoInput').click());
+$('#photoInput').addEventListener('change', e => {
+  const f = e.target.files && e.target.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = () => { setPhoto(r.result); $('#deskNote').textContent = 'photo loaded for preview only — send me the file and i\u2019ll bake it into the card permanently.'; };
+  r.readAsDataURL(f);
+});
+
+/* ---------- scattered desk stars ---------- */
+const STAR = '<svg viewBox="0 0 40 40"><path d="M20 2 l5 13 l14 1 l-11 9 l4 13 l-12 -8 l-12 8 l4 -13 l-11 -9 l14 -1z" fill="#8d0f1e"/></svg>';
+[[6,12,18,-14],[5,66,22,10],[92,20,20,16],[94,74,16,-8],[12,88,15,6],[88,44,13,22]].forEach(([l,t,w,r]) => {
+  const d = document.createElement('div');
+  d.className = 'deskStar';
+  d.style.cssText = 'left:'+l+'%;top:'+t+'%;width:'+w+'px;transform:rotate('+r+'deg)';
+  d.innerHTML = STAR;
+  document.body.appendChild(d);
+});
+
+/* ---------- flames (separate elements on the cake) ---------- */
+const WICKS = [{x:89,y:44},{x:150,y:38},{x:211,y:44}];
+const FLAME_SVG =
+ '<svg viewBox="0 0 50 62" aria-hidden="true">'+
+ '<rect x="2" y="2" width="46" height="58" rx="9" fill="#f4d3a8" stroke="#e0b884" stroke-width="2"/>'+
+ '<path d="M25 11 C33 23 38 29 38 38 C38 47 32 53 25 53 C18 53 12 47 12 38 C12 29 17 23 25 11Z" fill="none" stroke="#b81528" stroke-width="4" stroke-linejoin="round"/>'+
+ '<path d="M25 25 C29 32 31 35 31 40 C31 45 28.5 48 25 48 C21.5 48 19 45 19 40 C19 35 21 32 25 25Z" fill="#b81528" opacity=".85"/>'+
+ '</svg>';
+
+const cakeBox = $('#cakeBox');
+if(CONFIG.art.cake){
+  $('#cakeArt').style.backgroundImage = 'url("'+CONFIG.art.cake+'")';
+  $('#cakeArt').hidden = false;
+  $('#cakeSvg').style.display = 'none';
+}
+const flames = WICKS.map((w,i) => {
+  const el = document.createElement('div');
+  el.className = 'flame';
+  el.style.left = (w.x/300*100)+'%';
+  el.style.top  = (w.y/230*100)+'%';
+  el.innerHTML = CONFIG.art.flame
+    ? '<div class="artimg" style="background-image:url(\''+CONFIG.art.flame+'\')"></div>'
+    : FLAME_SVG;
+  cakeBox.appendChild(el);
+  const sm = document.createElement('div');
+  sm.className = 'smoke';
+  sm.style.left = (w.x/300*100)+'%';
+  sm.style.top  = (w.y/230*100)+'%';
+  cakeBox.appendChild(sm);
+  return {el, smoke:sm, phase:i*1.4, lit:true};
+});
+
+/* ---------- open / close ---------- */
+const stage = $('#stage'), scaler = $('#scaler'), cover = $('#cover'), letter = $('#letter');
+let isOpen = false, isReading = false;
+
+function openCard(){
+  if(isOpen) return;
+  isOpen = true; stage.classList.add('open'); fit();
+  enableMic();
+  setTimeout(()=>letter.focus({preventScroll:true}), 1000);
+}
+function closeCard(){ if(!isOpen) return; isOpen = false; isReading = false; letter.classList.remove('out'); stage.classList.remove('open'); fit(); cover.focus({preventScroll:true}); }
+cover.addEventListener('click', openCard);
+cover.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openCard(); } });
+$('#backBtn').addEventListener('click', closeCard);
+
+function toggleLetter(){
+  isReading = !isReading;
+  letter.classList.toggle('out', isReading);
+  fit();
+}
+letter.addEventListener('click', toggleLetter);
+letter.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggleLetter(); } });
+$('#envelope').addEventListener('click', toggleLetter);
+
+/* ---------- fit to screen ---------- */
+const PW = 380, PH = 540;
+function fit(){
+  const availW = Math.max(240, window.innerWidth - 20);
+  const availH = Math.max(320, window.innerHeight - 200);
+  const wide = isOpen ? PW*2 : PW;
+  let s = Math.min(availW/wide, availH/PH, 1.15);
+  let tx = 0;
+  if(isOpen && isReading){
+    const z = Math.min(availW/(PW+14), availH/PH, 1.6);
+    if(z > s) s = z;
+    tx = PW/2;
+  }
+  scaler.style.transform = 'scale('+s+') translateX('+tx+'px)';
+  scaler.style.height = (PH*s)+'px';
+}
+window.addEventListener('resize', fit);
+window.addEventListener('orientationchange', () => setTimeout(fit, 250));
+fit();
+
+/* ---------- blow detection ---------- */
+const meterFill = $('#meterFill'), micNote = $('#micNote');
+const THRESHOLD = 0.16, BLOW_MS = 500;
+
+let analyser=null, timeBuf=null, freqBuf=null, audioCtx=null;
+let micOn=false, holding=false, level=0, blowMs=0, quietMs=0, allOut=false, lastT=performance.now();
+
+let micTried = false;
+async function enableMic(){
+  if(micOn || micTried) return;
+  micTried = true;
+  try{
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('unsupported');
+    const stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+    audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') await audioCtx.resume();
+    const src = audioCtx.createMediaStreamSource(stream);
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 1024;
+    analyser.smoothingTimeConstant = 0.55;
+    src.connect(analyser);
+    timeBuf = new Uint8Array(analyser.fftSize);
+    freqBuf = new Uint8Array(analyser.frequencyBinCount);
+    micOn = true;
+    micNote.textContent = 'blow the candles';
+  }catch(err){
+    micNote.textContent = 'hold me to blow';
+  }
+}
+function micLevel(){
+  if(!analyser) return 0;
+  analyser.getByteTimeDomainData(timeBuf);
+  let sum=0;
+  for(let i=0;i<timeBuf.length;i++){ const v=(timeBuf[i]-128)/128; sum+=v*v; }
+  const rms = Math.sqrt(sum/timeBuf.length);
+  analyser.getByteFrequencyData(freqBuf);
+  const hz = audioCtx.sampleRate/2/freqBuf.length;
+  const lowEnd = Math.max(1, Math.floor(700/hz));
+  let low=0, all=0;
+  for(let i=0;i<freqBuf.length;i++){ all+=freqBuf[i]; if(i<lowEnd) low+=freqBuf[i]; }
+  const ratio = all>0 ? low/all : 0;
+  const weight = 0.45 + Math.min(1, ratio*1.5)*0.75;
+  return Math.min(1, rms*3.1*weight);
+}
+
+const holdBtn = $('#blowTag');
+['pointerdown','touchstart'].forEach(ev => holdBtn.addEventListener(ev, e => { e.preventDefault(); holding = true; }));
+['pointerup','pointercancel','pointerleave','touchend','touchcancel'].forEach(ev => holdBtn.addEventListener(ev, () => { holding = false; }));
+window.addEventListener('blur', () => { holding = false; });
+window.addEventListener('keydown', e => { if(e.code==='Space' && isOpen && !isReading){ e.preventDefault(); holding = true; } });
+window.addEventListener('keyup', e => { if(e.code==='Space') holding = false; });
+
+function loop(now){
+  const dt = Math.min(60, now-lastT); lastT = now;
+  const t = now/1000;
+  let target = 0;
+  if(holding) target = 0.72 + Math.sin(t*9)*0.06;
+  else if(micOn) target = micLevel();
+  level += (target-level)*0.28;
+  meterFill.style.width = Math.min(100, level*100)+'%';
+
+  if(!allOut){
+    if(level > THRESHOLD){ blowMs += dt; quietMs = 0; if(blowMs >= BLOW_MS) blowOut(); }
+    else { quietMs += dt; if(quietMs > 150) blowMs = 0; }
+  }
+
+  const strength = Math.max(0, Math.min(1, (level-0.04)/0.6));
+  flames.forEach((f,i) => {
+    if(!f.lit) return;
+    const flicker = Math.sin(t*6.5+f.phase)*1.8 + Math.sin(t*13.1+f.phase*2)*1.1;
+    const gust = Math.sin(t*10+i)*6*strength;
+    const bend = strength*52 + flicker + gust + i*2*strength;
+    const sy = 1 - strength*0.34 + Math.sin(t*8.5+f.phase)*0.03;
+    const sx = 1 + strength*0.13;
+    f.el.style.setProperty('--bend', bend.toFixed(2)+'deg');
+    f.el.style.setProperty('--sy', sy.toFixed(3));
+    f.el.style.setProperty('--sx', sx.toFixed(3));
+  });
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+function blowOut(){
+  if(allOut) return;
+  allOut = true; blowMs = 0;
+  flames.forEach((f,i) => setTimeout(() => {
+    f.lit = false; f.el.classList.add('out');
+    f.smoke.classList.remove('go'); void f.smoke.offsetWidth; f.smoke.classList.add('go');
+  }, i*110));
+  micNote.textContent = 'nice lungs';
+  setTimeout(() => { $('#wish').classList.add('show'); burst(); }, 700);
+}
+$('#relightBtn').addEventListener('click', () => {
+  $('#wish').classList.remove('show');
+  flames.forEach(f => { f.lit = true; f.el.classList.remove('out'); f.smoke.classList.remove('go'); });
+  allOut = false; blowMs = 0;
+  micNote.textContent = micOn ? 'blow the candles' : 'hold me to blow';
+});
+
+/* ---------- confetti ---------- */
+const cv = $('#confetti'), cx = cv.getContext('2d');
+let bits = [];
+function sizeCanvas(){ const dpr = Math.min(2, window.devicePixelRatio||1); cv.width = innerWidth*dpr; cv.height = innerHeight*dpr; cx.setTransform(dpr,0,0,dpr,0,0); }
+sizeCanvas();
+window.addEventListener('resize', sizeCanvas);
+const COLORS = ['#b81528','#8d0f1e','#f0c419','#e86a8c','#2f6fb0','#fdfaf2','#4f9a54'];
+function burst(){
+  const n = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 30 : 150;
+  for(let i=0;i<n;i++){
+    bits.push({x:innerWidth*(0.3+Math.random()*0.4), y:innerHeight*0.35+Math.random()*40,
+      vx:(Math.random()-0.5)*7, vy:-3-Math.random()*7,
+      w:5+Math.random()*7, h:8+Math.random()*10,
+      rot:Math.random()*Math.PI, vr:(Math.random()-0.5)*0.24,
+      c:COLORS[(Math.random()*COLORS.length)|0], life:200});
+  }
+  if(bits.length) requestAnimationFrame(drawBits);
+}
+function drawBits(){
+  cx.clearRect(0,0,innerWidth,innerHeight);
+  bits = bits.filter(b => b.life-- > 0 && b.y < innerHeight+40);
+  bits.forEach(b => {
+    b.vy += 0.17; b.vx *= 0.995; b.x += b.vx; b.y += b.vy; b.rot += b.vr;
+    cx.save(); cx.translate(b.x,b.y); cx.rotate(b.rot);
+    cx.fillStyle = b.c; cx.fillRect(-b.w/2,-b.h/2,b.w,b.h); cx.restore();
+  });
+  if(bits.length) requestAnimationFrame(drawBits);
+  else cx.clearRect(0,0,innerWidth,innerHeight);
+}
+
+if(location.protocol === 'file:'){
+  $('#deskNote').textContent = 'opened as a local file, so the mic will not work. host it over https, or hold the \u201cblow the candles\u201d label.';
+}
+</script>
+</body>
+</html>
